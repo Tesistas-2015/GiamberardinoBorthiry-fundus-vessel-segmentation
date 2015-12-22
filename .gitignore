@@ -1,0 +1,8 @@
+dataset/*
+anisodiff_Perona-Malik/*
+coherencefilter/*
+regiongrowing.*
+.git.old/*
+*.bmp
+*.csv
+*~
