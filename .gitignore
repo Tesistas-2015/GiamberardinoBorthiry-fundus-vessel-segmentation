@@ -1,6 +1,7 @@
 dataset/*
 anisodiff_Perona-Malik/*
 coherencefilter/*
+FeatureExtraction/*
 regiongrowing.*
 .git.old/*
 *.bmp
