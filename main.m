@@ -9,33 +9,47 @@ close all;
 %      im2double(imread('dataset/GER7/GER3.bmp')),...
 %      im2double(imread('dataset/GER7/GER4.bmp'))...
 %      );
-m_cant=4;
-i_cant=1;
+m_cant=1;
+i_cant=4;
 I = [];
 %I(1).img = im2double(imread('dataset/GER7/GER1.bmp'));
-I(1).img = sacar_fondo(im2double(imread('dataset/GER7TH/GER2.bmp')),'median');
-%I(3).img = im2double(imread('dataset/GER7/GER3.bmp'));
-%I(4).img = im2double(imread('dataset/GER7/GER4.bmp'));
+load(strcat('dataset/GER7/GER1.bmp81x81.mat'),'mediana');
+I(1).img = adapthisteq(im2double(imread('dataset/GER7/GER1.bmp')) - im2double(mediana));
+load(strcat('dataset/GER7/GER2.bmp81x81.mat'),'mediana');
+I(2).img = adapthisteq(im2double(imread('dataset/GER7/GER2.bmp')) - im2double(mediana));
+load(strcat('dataset/GER7/GER3.bmp81x81.mat'),'mediana');
+I(3).img = adapthisteq(im2double(imread('dataset/GER7/GER3.bmp')) - im2double(mediana));
+load(strcat('dataset/GER7/GER4.bmp81x81.mat'),'mediana');
+I(4).img = adapthisteq(im2double(imread('dataset/GER7/GER4.bmp')) - im2double(mediana));
 
 
-%GT(1).img = imread('dataset/GER7-GT/GER1-GT.png');
-GT(1).img = imread('dataset/GER7-GTTH/GER2-GT.png');
-%GT(3).img = imread('dataset/GER7-GT/GER3-GT.png');
-%GT(4).img = imread('dataset/GER7-GT/GER4-GT.png');
+GT(1).img = imread('dataset/GER7-GT/GER1-GT.png');
+GT(2).img = imread('dataset/GER7-GT/GER2-GT.png');
+GT(3).img = imread('dataset/GER7-GT/GER3-GT.png');
+GT(4).img = imread('dataset/GER7-GT/GER4-GT.png');
 
-metodos(1).m='none';
+% metodos(1).m='none';
+metodos(1).m='anisodiff';
+% metodos(3).m='median';
+% metodos(4).m='coherence';
+% leyendas={'none','anisodiff','median','coherence'};
+
 metodos(2).m='anisodiff';
-metodos(3).m='median';
-metodos(4).m='coherence';
-leyendas={'none','anisodiff','median','coherence'};
+metodos(2).args.filename='anisodiffprueba';
+metodos(2).args.directory='pre_process/';
+metodos(2).args.iterations=10;
+metodos(2).args.delta_t=1/20;
+metodos(2).args.kappa=70;
 
+
+%%
 for j=1:m_cant
     scores=[];
     labels=[];
     for i=1:i_cant
         image=I(i).img;
         Inorm = (image-min(image(:)))/(max(image(:))-min(image(:)));
-        img(i,j).data=preprocess(Inorm,metodos(j).m);
+        img(i,j).data=preprocess(Inorm,metodos(j).m,metodos(2).args);
         GT_aux = (GT(i).img+GT(i).img)-1;
         scores=[scores,img(i,j).data];
         labels=[labels,GT_aux];

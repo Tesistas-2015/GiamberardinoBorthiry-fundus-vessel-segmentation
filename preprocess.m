@@ -1,12 +1,12 @@
-function [labels] = preprocess(image, method)
+function [labels] = preprocess(image, method,args)
    
     switch(method)
         case 'anisodiff'
-            labels = anisodiff2D(image,15,1/20,70,1);
+            labels = anisodiff2D(image,args.iterations,args.delta_t,args.kappa,1);
         case 'coherence'
-            labels = CoherenceFilter(image,struct('T',15,'rho',1,'Scheme','O'));
+            labels = CoherenceFilter(image,struct('T',args.T,'rho',args.rho,'Scheme','O'));
         case 'median'
-            labels = medfilt2(image,[3 3]);
+            labels = medfilt2(image,[args.n args.n]);
         otherwise
             labels = image;
     end;
