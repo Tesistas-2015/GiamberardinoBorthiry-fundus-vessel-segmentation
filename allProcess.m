@@ -30,7 +30,10 @@ medfile(2).name = 'dataset/GER7/GER2.bmp';
 medfile(3).name = 'dataset/GER7/GER3.bmp';
 medfile(4).name = 'dataset/GER7/GER4.bmp';
 
-
+avgfile(1).name = 'dataset/GER7/average/GER1.bmp';
+avgfile(2).name = 'dataset/GER7/average/GER2.bmp';
+avgfile(3).name = 'dataset/GER7/average/GER3.bmp';
+avgfile(4).name = 'dataset/GER7/average/GER4.bmp';
 
 GT(1).img = imread('dataset/GER7-GT/GER1-GT.png');
 GT(2).img = imread('dataset/GER7-GT/GER2-GT.png');
@@ -275,3 +278,23 @@ umbralada=umbralar;
 umbralada(umbralar <= t)=0;
 umbralada(umbralar > t)=1;
 figure,imshow(umbralada);
+
+%%
+k=119;
+load(strcat(medfile(2).name,int2str(k),'x',int2str(k),'.mat'),'mediana');
+tmp(2).mask = getmask(I(2).img);
+tmp(2).img = I(2).img-im2double(mediana);
+figure,imshow(tmp(2).img,[]);
+tmp(2).img = adapthisteq(I(2).img-im2double(mediana));
+figure,imshow(tmp(2).img,[]);
+
+
+
+%%
+load(strcat(avgfile(2).name,int2str(115),'x',int2str(115),'.mat'),'media');
+tmp(2).mask = getmask(I(2).img);
+tmp(2).img = adapthisteq(I(2).img-im2double(media));
+
+
+%coherencia=CoherenceFilter(tmp(2).img,struct('T',150));
+anisodiff=anisodiff2D(tmp(2).img,19,1/20,70,1);

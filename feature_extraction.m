@@ -387,7 +387,7 @@ for s=10:5:45
     fprintf('\rIteration %d\n',s);
     for k=1:4
         fprintf('\rIteration k %d\n',k);
-        load(strcat('dataset/preprocesadas/AMD/',AMD(k).name,'.mat'),'preprocesada','mask');
+        load(strcat('dataset/preprocesadas/GER/',GER(k).name,'.mat'),'preprocesada','mask');
         [data, ~] = extractFeature('Zana',preprocesada,mask,options);
         z2 = data;
         z2(z2>0) = 0;
